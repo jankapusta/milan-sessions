@@ -24,6 +24,16 @@
           let mince = [1,1,1,2,2,2,2,5,];
 
           
+          let spocitaneMince = {};
+          
+          mince.forEach(minca => {
+            let pocet = spocitaneMince[minca] + 1; 
+            spocitaneMince[minca] = pocet;
+            console.log('zapocital som jednu mincu velkosti: ' + minca);
+            console.log('uz ich je:' + pocet);
+          });
+
+          
         }
 
        
