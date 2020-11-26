@@ -21,7 +21,7 @@
         function spustiScript(){
           console.log("start");
           let suma = 8;
-          let mince = [1,1,2,2,5,1,2];
+          let mince = [3,1,2,2,5,1,2];
 
 
           let spocitaneMince = {};
@@ -36,13 +36,16 @@
             console.log('uz ich je:' + pocet);
           });
           console.log(spocitaneMince);
+          console.log('toto je riesenie A')
           najdiMoznostiPlateniaA(suma, mince);
+          console.log('toto je riesenie B')
+          najstRieseniaPlateniaB(suma, mince);
         }
 
 
         // RIESENIE A -----------------------------------------
         function najdiMoznostiPlateniaA(ziadanaSuma, dostupneMince) {
-          riesenia = [];
+          let riesenia = [];
           najdiDalsiuMincu(ziadanaSuma, dostupneMince, [], riesenia);
           console.log(riesenia);
         }
@@ -70,7 +73,43 @@
 
 
         // RIESENIE B -----------------------------------------
-        // TODO
+        function najstRieseniaPlateniaB(ziadanaSuma, dostupneMince){
+          let mesce = {};
+          dostupneMince.forEach((jednaMinca, index) => {
+            if (mesce[jednaMinca] == undefined){
+              console.log('nastazv mesec na 0',jednaMinca)
+              mesce[jednaMinca] = 0
+            }
+            console.log('zvys pocet minci o 1',jednaMinca)
+            mesce[jednaMinca] += 1 
+          })
+          console.log(mesce)
+          let riesenia = [];
+          najdiDalsiuMincuB(ziadanaSuma, mesce ,[],riesenia)
+          console.log(riesenia)
+          
+
+        }
+        function najdiDalsiuMincuB(ziadanaSuma, dostupneMesce, pouziteMince, vsetkyRiesenia){
+          if (ziadanaSuma == 0) {
+            // console.log('superMameTo')
+            // console.log(pouziteMince)
+            vsetkyRiesenia.push(pouziteMince);
+          }
+          if(ziadanaSuma <= 0){
+            return;
+          }
+           dostupneMesce.forEach((pocetminci,index) => {
+             let kopiaDostupnychMinci = skopiruj(dostupneMince)
+             kopiaDostupnychMinci.splice(index);
+             
+             let kopiaPuzitemice = skopiruj(pouziteMince);
+             kopiaPuzitemice.push(jednaMinca);
+             najdiDalsiuMincu(ziadanaSuma - jednaMinca,kopiaDostupnychMinci, kopiaPuzitemice, vsetkyRiesenia);
+           })
+        }
+
+
 
         // RIESENIE B END -----------------------------------------
 
