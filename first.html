@@ -37,11 +37,10 @@
           });
           console.log(spocitaneMince);
           najdiMoznostiPlateniaA(suma, mince);
-          //console.log(spocitaneMince[2])
         }
 
 
-        // RIESENIE 1 -----------------------------------------
+        // RIESENIE A -----------------------------------------
         function najdiMoznostiPlateniaA(ziadanaSuma, dostupneMince) {
           riesenia = [];
           najdiDalsiuMincu(ziadanaSuma, dostupneMince, [], riesenia);
@@ -66,8 +65,18 @@
              najdiDalsiuMincu(ziadanaSuma - jednaMinca,kopiaDostupnychMinci, kopiaPuzitemice, vsetkyRiesenia);
            })
         }
-        // RIESENIE 1 END -----------------------------------------
+        // RIESENIE A END -----------------------------------------
 
+
+
+        // RIESENIE B -----------------------------------------
+        // TODO
+
+        // RIESENIE B END -----------------------------------------
+
+
+
+        // ine pomocne funkcie
         function skopiruj(pole) {
           return pole.map(function(e){return e;});
         }
