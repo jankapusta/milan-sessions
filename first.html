@@ -40,6 +40,8 @@
           najdiMoznostiPlateniaA(suma, mince);
           console.log('toto je riesenie B')
           najstRieseniaPlateniaB(suma, mince);
+          console.log('toto je riesenie C')
+          najstRieseniaPlateniaC(suma, mince);
         }
 
 
@@ -52,18 +54,17 @@
 
         function najdiDalsiuMincu(ziadanaSuma, dostupneMince, pouziteMince, vsetkyRiesenia){
           if (ziadanaSuma == 0) {
-            // console.log('superMameTo')
-            // console.log(pouziteMince)
             vsetkyRiesenia.push(pouziteMince);
+            return;
           }
-          if(ziadanaSuma <= 0){
+          if(ziadanaSuma < 0){
             return;
           }
            dostupneMince.forEach((jednaMinca,index) => {
-             let kopiaDostupnychMinci = skopiruj(dostupneMince)
+             let kopiaDostupnychMinci = skopirujPole(dostupneMince)
              kopiaDostupnychMinci.splice(index);
              
-             let kopiaPuzitemice = skopiruj(pouziteMince);
+             let kopiaPuzitemice = skopirujPole(pouziteMince);
              kopiaPuzitemice.push(jednaMinca);
              najdiDalsiuMincu(ziadanaSuma - jednaMinca,kopiaDostupnychMinci, kopiaPuzitemice, vsetkyRiesenia);
            })
@@ -77,47 +78,102 @@
           let mesce = {};
           dostupneMince.forEach((jednaMinca, index) => {
             if (mesce[jednaMinca] == undefined){
-              console.log('nastazv mesec na 0',jednaMinca)
+              // console.log('nastazv mesec na 0',jednaMinca)
               mesce[jednaMinca] = 0
             }
-            console.log('zvys pocet minci o 1',jednaMinca)
+            // console.log('zvys pocet minci o 1',jednaMinca)
             mesce[jednaMinca] += 1 
           })
           console.log(mesce)
           let riesenia = [];
-          najdiDalsiuMincuB(ziadanaSuma, mesce ,[],riesenia)
+          najdiDalsiuMincuB(ziadanaSuma, mesce, [], riesenia)
           console.log(riesenia)
-          
-
         }
+
         function najdiDalsiuMincuB(ziadanaSuma, dostupneMesce, pouziteMince, vsetkyRiesenia){
           if (ziadanaSuma == 0) {
-            // console.log('superMameTo')
-            // console.log(pouziteMince)
             vsetkyRiesenia.push(pouziteMince);
-          }
-          if(ziadanaSuma <= 0){
             return;
           }
-           dostupneMesce.forEach((pocetminci,index) => {
-             let kopiaDostupnychMinci = skopiruj(dostupneMince)
-             kopiaDostupnychMinci.splice(index);
+          if(ziadanaSuma < 0){
+            return;
+          }
+          // vyskusaj kazdy mesec
+           Object.keys(dostupneMesce).forEach((velkostMinceVTomtoMesci) => {
+             let pocetMinciVTomtoMesci = dostupneMesce[velkostMinceVTomtoMesci];
+             // ignoruj prazdny mesec
+             if (pocetMinciVTomtoMesci == 0) {
+               return;
+             }
+             let kopiaMescov = skopirujObjekt(dostupneMesce)
+             // zniz pocet minc v kopii tohto mesca
+             kopiaMescov[velkostMinceVTomtoMesci] -= 1;
              
-             let kopiaPuzitemice = skopiruj(pouziteMince);
-             kopiaPuzitemice.push(jednaMinca);
-             najdiDalsiuMincu(ziadanaSuma - jednaMinca,kopiaDostupnychMinci, kopiaPuzitemice, vsetkyRiesenia);
+             let kopiaPuzitemice = skopirujPole(pouziteMince);
+             kopiaPuzitemice.push(velkostMinceVTomtoMesci);
+             najdiDalsiuMincuB(ziadanaSuma - velkostMinceVTomtoMesci, kopiaMescov, kopiaPuzitemice, vsetkyRiesenia);
            })
         }
-
-
-
         // RIESENIE B END -----------------------------------------
 
 
 
+        // RIESENIE C -----------------------------------------
+        function najstRieseniaPlateniaC(ziadanaSuma, dostupneMince){
+          let mesce = {};
+          dostupneMince.forEach((jednaMinca, index) => {
+            if (mesce[jednaMinca] == undefined){
+              // console.log('nastazv mesec na 0',jednaMinca)
+              mesce[jednaMinca] = 0
+            }
+            // console.log('zvys pocet minci o 1',jednaMinca)
+            mesce[jednaMinca] += 1
+          })
+          console.log(mesce)
+          let riesenia = [];
+          najdiDalsiuMincuC(ziadanaSuma, mesce, [], riesenia)
+          console.log(riesenia)
+        }
+
+        function najdiDalsiuMincuC(ziadanaSuma, dostupneMesce, pouziteMince, vsetkyRiesenia){
+          if (ziadanaSuma == 0) {
+            vsetkyRiesenia.push(pouziteMince);
+            return;
+          }
+          if(ziadanaSuma < 0){
+            return;
+          }
+          // vyskusaj kazdy mesec
+          Object.keys(dostupneMesce).forEach((velkostMinceVTomtoMesci) => {
+            let pocetMinciVTomtoMesci = dostupneMesce[velkostMinceVTomtoMesci];
+            // ignoruj prazdny mesec
+            if (pocetMinciVTomtoMesci == 0) {
+              return;
+            }
+            // ignoruje mesec kde su vacsie mince ako posledna - chceme iba kombinacie kde mince su zoradene od navacsej
+            if (velkostMinceVTomtoMesci > pouziteMince[pouziteMince.length - 1]) {
+              return;
+            }
+
+            let kopiaMescov = skopirujObjekt(dostupneMesce)
+            // zniz pocet minc v kopii tohto mesca
+            kopiaMescov[velkostMinceVTomtoMesci] -= 1;
+
+            let kopiaPuzitemice = skopirujPole(pouziteMince);
+            kopiaPuzitemice.push(velkostMinceVTomtoMesci);
+            najdiDalsiuMincuC(ziadanaSuma - velkostMinceVTomtoMesci, kopiaMescov, kopiaPuzitemice, vsetkyRiesenia);
+          })
+        }
+        // RIESENIE C END -----------------------------------------
+
+
+
         // ine pomocne funkcie
-        function skopiruj(pole) {
+        function skopirujPole(pole) {
           return pole.map(function(e){return e;});
+        }
+        function skopirujObjekt(obj) {
+          return Object.assign({}, obj);
         }
 
 
