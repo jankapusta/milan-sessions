@@ -21,7 +21,7 @@
         function spustiScript(){
           console.log("start");
           let suma = 8;
-          let mince = [1,1,1,2,2,2,2,5,1,2,5];
+          let mince = [1,1,2,2,5,1,2];
 
 
           let spocitaneMince = {};
@@ -36,14 +36,32 @@
             console.log('uz ich je:' + pocet);
           });
           console.log(spocitaneMince);
+          najdiDalsiuMincu(suma, mince,[]);
 
 
+          //console.log(spocitaneMince[2])
+        }
 
-      
+        function najdiDalsiuMincu(ziadanaSuma, dostupneMince,pouziteMince){
+          if(ziadanaSuma == 0){
+            console.log('superMameTo')
+            console.log(pouziteMince)
+          }
+          if(ziadanaSuma <= 0){
+            return;
+          }
+           dostupneMince.forEach((jednaMinca,index) => {
+             let kopiaDostupnychMinci = dostupneMince.map(function(e){return e;});
+             kopiaDostupnychMinci.splice(index);
+             
+             let kopiaPuzitemice = pouziteMince.map(function(e){return e;});
+             kopiaPuzitemice.push(jednaMinca);
+             najdiDalsiuMincu(ziadanaSuma - jednaMinca,kopiaDostupnychMinci, kopiaPuzitemice);
+           })
+
 
           
         }
-
        
 
         //let cislo;
