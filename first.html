@@ -36,33 +36,45 @@
             console.log('uz ich je:' + pocet);
           });
           console.log(spocitaneMince);
-          najdiDalsiuMincu(suma, mince,[]);
-
-
+          najdiMoznostiPlateniaA(suma, mince);
           //console.log(spocitaneMince[2])
         }
 
-        function najdiDalsiuMincu(ziadanaSuma, dostupneMince,pouziteMince){
-          if(ziadanaSuma == 0){
-            console.log('superMameTo')
-            console.log(pouziteMince)
+
+        // RIESENIE 1 -----------------------------------------
+        function najdiMoznostiPlateniaA(ziadanaSuma, dostupneMince) {
+          riesenia = [];
+          najdiDalsiuMincu(ziadanaSuma, dostupneMince, [], riesenia);
+          console.log(riesenia);
+        }
+
+        function najdiDalsiuMincu(ziadanaSuma, dostupneMince, pouziteMince, vsetkyRiesenia){
+          if (ziadanaSuma == 0) {
+            // console.log('superMameTo')
+            // console.log(pouziteMince)
+            vsetkyRiesenia.push(pouziteMince);
           }
           if(ziadanaSuma <= 0){
             return;
           }
            dostupneMince.forEach((jednaMinca,index) => {
-             let kopiaDostupnychMinci = dostupneMince.map(function(e){return e;});
+             let kopiaDostupnychMinci = skopiruj(dostupneMince)
              kopiaDostupnychMinci.splice(index);
              
-             let kopiaPuzitemice = pouziteMince.map(function(e){return e;});
+             let kopiaPuzitemice = skopiruj(pouziteMince);
              kopiaPuzitemice.push(jednaMinca);
-             najdiDalsiuMincu(ziadanaSuma - jednaMinca,kopiaDostupnychMinci, kopiaPuzitemice);
+             najdiDalsiuMincu(ziadanaSuma - jednaMinca,kopiaDostupnychMinci, kopiaPuzitemice, vsetkyRiesenia);
            })
-
-
-          
         }
-       
+        // RIESENIE 1 END -----------------------------------------
+
+        function skopiruj(pole) {
+          return pole.map(function(e){return e;});
+        }
+
+
+
+
 
         //let cislo;
         //cislo = 2;
