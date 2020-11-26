@@ -6,10 +6,10 @@
     <div>
       <p>
         Zadaj cislo do policka:
-        <input id="prvy" value="12">
+        <input id="prvy" value="8">
         <br>
         Zadaj druhe cislo do policka:
-        <input id="druhy" value="8">
+        <input id="druhy" value="3,1,2,2,5,1,2">
         <br>
         <button onclick="spustiScript();">Spocitaj</button>
       </p>
@@ -20,8 +20,8 @@
       <script>
         function spustiScript(){
           console.log("start");
-          let suma = 8;
-          let mince = [3,1,2,2,5,1,2];
+          let suma = parseInt(document.getElementById('prvy').value);
+          let mince = document.getElementById('druhy').value.split(',').map((e) => { return parseInt(e);});
 
 
           let spocitaneMince = {};
